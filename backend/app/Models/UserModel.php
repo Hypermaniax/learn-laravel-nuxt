@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class UserModel extends Authenticatable implements JWTSubject
+{
+    protected $table = 'users';
+
+    protected $fillable = ['name', 'email', 'password', 'role_id'];
+    protected $hidden = ['password'];
+
+    public function role()
+    {
+        return $this->belongsTo(RoleModel::class, 'role_id');
+    }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+}
